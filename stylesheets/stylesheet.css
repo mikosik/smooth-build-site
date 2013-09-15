@@ -271,7 +271,7 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 50px 10px 10px;
   color: #222222;
-  background: url('../images/blacktocat.png') #fff no-repeat 95% 50%;
+  background: url('../images/blacktocat.png') #fff no-repeat 90% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
@@ -287,7 +287,22 @@ Full-Width Styles
   z-index: 10;
   padding: 10px 25px 10px 25px;
   color: #222222;
-  background: #fff no-repeat 95% 50%;
+  background: #fff;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
+#donate_banner {
+  display: block;
+  position: absolute;
+  top:0;
+  right: 340px;
+  z-index: 10;
+  padding: 10px 50px 10px 35px;
+  color: #222222;
+  background: url('../images/bitcoin.png') #fff no-repeat 85% 50%;
   font-weight: 700;
   box-shadow: 0 0 10px rgba(0,0,0,.5);
   border-bottom-left-radius: 2px;
