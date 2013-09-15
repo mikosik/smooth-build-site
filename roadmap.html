@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Smooth-build : powerful build tool with simple language" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Smooth-build</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="download_banner" href="TODO ">download v0.1</a>
+          <a id="forkme_banner" href="https://github.com/mikosik/smooth-build">source code</a>
+
+          <h1 id="project_title"><a class="white_link" href="index.html">Smooth-build</a></h1>
+          <h2 id="project_tagline">powerful build tool with simple language</h2>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Features roadmap</a></h2>
+<a name="soon-following-features-will-be-added" class="anchor" href="#soon-following-features-will-be-added"><span class="octicon octicon-link"></span></a>
+
+<p>Below is the list of features that are not yet in place. The most important are at the top and will be probably implemented first.</p>
+<br>
+
+<h3>Parallel function execution </h3>
+
+<p>In the following Smooth script:</p>
+
+<pre><code>classes:     files("src/") | javac;
+release-jar: classes | jar | save("release/");
+test:        classes | junit;
+</code></pre>
+
+<p>functions <code>release-jar</code> and <code>test</code> both depend on <code>classes</code> function (which will be executed first) but do not depend on each others so they will be executed in parallel.</p>
+<br>
+
+<h3>Incremental builds</h3>
+
+<p>Yikes! It is not supported yet but it is at the top of my to-do list. For now, each build starts from scratch.</p>
+<br>
+
+<h3>Copy-paste detection</h3>
+
+<p>Consider following Smooth script:</p>
+
+<pre><code>release-jar: files("src/") | javac | jar | save("release/");
+test:        files("src/") | javac | junit;
+</code></pre>
+
+<p>Both <code>release-jar</code> and <code>test</code> functions compile sources from 'src' dir. Smooth build will detect that and perform only one compilation, feeding result to both functions. Obviously in most cases you would extract common code into separate function anyway (to increase readability and ease maintenance).</p>
+<br>
+
+<h3>Parallelizing batches</h3>
+
+<p>Processing set of files independently is a great occassion for parallelizing work. Consider process of converting svg files into png format. All we need is a function that accepts single svg file and returns single png file. Given this we should be able to run conversion of all files in parallel like in script below. Note double pipe characters ('||') before svgToPng call. This tells Smooth that although function svgToPng does not accept set of files but just a single file - each file should be passed to the function in separate call (of course call executions will happen in parallel).</p>
+
+<pre><code>convert: files("svg-files/") || svgToPng | save("release/");
+</code></pre>
+<br><br>
+
+<h3>Packages/Imports</h3>
+
+<p>Imports will be introduced to avoid name clashes when number of builtin functions grows. To use (reference) a function you would have to import it at the beginning of Smooth script file. You could also use fully qualified name in a function call.</p>
+
+<pre><code>import smooth.file.*;
+import smooth.java.javac;
+
+release-jar: files("src/") | javac | smooth.compress.jar | save ("release/");
+</code></pre>
+<br><br>
+
+<h3>User defined parameterized functions</h3>
+
+<p>So far only builtin function could accept parameters. User defined functions were always paremeterless. Introduction of user defined parameterized functions will allow more advanced code reused. Consider following script:</p>
+
+<pre><code>release-app1-jar: files("app1/src/") | javac | jar | save ("release-app-1/");
+release-app2-jar: files("app2/src/") | javac | jar | save ("release-app-2/");
+</code></pre>
+
+<p>The only difference between functions is a list of input files and output file. We could do better:</p>
+
+<pre><code>release-function(File* sources): sources | javac | jar;
+release-app1-jar: files("app1/src/") | release-function
+                | save ("release-app-1/");
+release-app2-jar: files("app2/src/") | release-function
+                | save ("release-app-2/");
+</code></pre>
+
+<p>This is not the shortest version posssible as I wanted to show how user defined function could be easily used inside pipes (taking output of one function, processing it, and passing to the next function in the pipe). We can ofcourse simplify it even more:</p>
+
+<pre><code>release-function(String sourceDir, String outputDir):
+           files(sourceDir) | javac | jar | save(outputDir);
+release-app1-jar: release-function("app1/src/", "release-app-1/");
+release-app2-jar: release-function("app2/src/", "release-app-2/");
+</code></pre>
+<br><br>
+
+<h3>Modules</h3>
+
+<p>As project gets bigger it is sometimes necessary to split build script into a few separate files. The simplest way I can think of is to treat each script file as a separate module with explicitely declared package name. Modules should be capable of installing other modules and importing functions from installed modules. This will be a heaven for 'convention over configuration' band. It will be not only possible to reuse project file structure that has been defined by others in some Smooth module simply by installing given module and calling its functions. It will be also possible to define your module and share it with others. As modules will be written entirely in Smooth language it will be easy to understand what they do and what file structure they require without digging in the documentation.</p>
+<br>
+
+<h3>Other basic types</h3>
+
+<p>Apart from following basic types:</p>
+
+<ul>
+<li>File - single file</li>
+<li>File* - set of files</li>
+<li>String - string value</li>
+<li>String* set of Strings</li>
+</ul><p>Smooth should support at least:</p>
+
+<ul>
+<li>Bool - boolean value</li>
+<li>Bool* - set of Bools</li>
+<li>Int - single integer</li>
+<li>Int* - set of integers</li>
+</ul>
+<br>
+
+<h3>Module/function plugins</h3>
+
+<p>It should be possible to implement your own Smooth plugin (module with set of functions) in Java language and install it in your smooth module similar way it is done for Smooth modules/scripts. All builtin smooth functions are already implemented as plugins. The missing part is to provide a way to install/reference user developed plugins from Smooth modules.</p></article>
+  </div>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p><a class="white_link" href="TODO">discussion group</a> | <a class="white_link" href="https://github.com/mikosik/smooth-build/issues/new">report issue</a></p>
+      </footer>
+    </div>
+
+  </body>
+</html>
