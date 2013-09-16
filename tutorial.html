@@ -41,23 +41,25 @@ git clone https://github.com/mikosik/smooth-build-examples.git
         </p>
         <p>or download <a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/archive/master.zip">master.zip</a> file if you do not have git installed.</p>
         
-        <h4>Project layout</h4>  
+        <h4>Running build</h4>  
         <p>Smooth uses "build.smooth" file located in your project's root directory as a description of project's build process. If you downloaded smooth-build-examples, note that it contains many exampleXX directories - each being separate project - so each contains single "build.smooth" file.
         </p>
         <p>
-        To run build process enter directory "example00" and type "smooth releaseJar" (on Linux) or "smooth.bat releaseJar" (on Windows). If you installed smooth correctly and added it to your system PATH as advised by <a class="visible_link" href="install.html"> download / install</a> you should get smooth running successfully.
+        To run build process enter directory "example01" and type "smooth releaseJar" (on Linux) or "smooth.bat releaseJar" (on Windows). If you installed smooth correctly and added it to your system PATH as advised by <a class="visible_link" href="install.html"> download / install</a> you should get smooth running successfully.
         </p>
+
+        <h4>Function calls</h4>
         </p>
-Now let's take a look at build file we just run from our first example (<a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example01">example01</a>)
+Now let's take a look at build file we just run from our first example (<a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example01">example01</a>). Note you can click function names in each example to see detailed API documentation.
         </p>
         <p>
 <pre><code>
-releaseJar: <a href="api/smooth/file/files.html">files("src/")</a> | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save("release/")</a>;
+releaseJar: <a href="api/smooth/file/files.html">files</a>("src/") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release/");
 
 </code></pre>
         </p>
         <p>
-        If you happen to know how pipes work in Linux shells it will be clear to you what this build does. It
+        If you happen to know how pipes work in Linux shells it will be clear to you what this build does. It simply:
         <ul>
           <li>takes all files (recursively) from "src" directory</li>
           <li>passes them to javac function (Java compiler) that compiles them</li>
@@ -66,9 +68,46 @@ releaseJar: <a href="api/smooth/file/files.html">files("src/")</a> | <a href="ap
         </ul>
         </p>
         <p>Note that you don't need to explicitly create directory for *.class files nor even mention it in build file. Smooth handles that automatically.</p>
-        <p>Also note that each function in each example in this tutorial is linked to its documentation. Just hover over any function name to see the link that should be followed.</p>
 
+        <p>Let's dig a little bit deeper into functions chaining. What we've seen above (pipes) is just a syntactic sugar over more brittle function calls. We could rewrite above example into something like this:
+        <p>
+<pre><code>
+releaseJar: <a href="api/smooth/file/save.html">save</a>("release/", <a href="api/smooth/java/jar.html">jar</a>(<a href="api/smooth/java/javac.html">javac</a>(<a href="api/smooth/file/files.html">files</a>("src/"))));
 
+</code></pre>
+        </p>
+        <p>
+        Now it looks like more friendly if you come from world of imperative languages. Let's break it down to basic bits starting with most inner call.
+        <ul>
+          <li><a href="api/smooth/file/files.html">files</a>("src/") takes all files from "src/" directory</li>
+          <li>Those files are passed as argument to <a href="api/smooth/java/javac.html">javac</a> function which compiles them and returns class files</li>
+          <li>Those are further passed to <a href="api/smooth/java/jar.html">jar</a> function that packs them all into one file</li>
+          <li>Finally this single file is passed to <a href="api/smooth/file/save.html">save</a> function along with additional parameter specifying destination directory</li>
+        </ul>
+        </p>
+        <p>As you could probably noticed version using pipes is much more readable. The flow of data through different functions is much more visible. You should always strive to use pipes version.</p>
+
+        <h4>Named parameters</h4>
+        <p>
+          If you take a look at our last example and check documentation for <a href="api/smooth/file/save.html">save</a> function you notice that we passed only two arguments to it while documentation for that function specifies three. Smooth intelligently deduced which parameters should be assigned from which argument based on their types. So in the last example
+          <ul>
+            <li>String literal "release/" was assigned to String parameter "dir"</li>
+            <li>File result from <a href="api/smooth/java/jar.html">jar</a> function was assigned to File parameter "file"</li>
+            <li>Parameter "files" of type File* was left unassigned</li>
+          </ul>
+        </p>
+        <p>
+          Unfortunately this won't always work. If we have function with more arguments of the same type we will be in trouble. Such cases however can be solved by explicitely stating name of parameter to which given argument should be assigned. Let's rewrite our last example and explicitely assign argument to parameters (even though it is not necessary in that case).
+        </p>
+        <p>
+<pre><code>
+releaseJar: <a href="api/smooth/file/save.html">save</a>(dir="release/", file=<a href="api/smooth/java/jar.html">jar</a>(<a href="api/smooth/java/javac.html">javac</a>(<a href="api/smooth/file/files.html">files</a>("src/"))));
+
+</code></pre>
+        </p>
+        <p>
+          Note that assigning arguments to parameters cannot be done for values that are passed through pipes which may be a nuisanance but can be solved by refactoring pipe calls into nested function calls.
+        </p>
 
       </section>
     </div>
