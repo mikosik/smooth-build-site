@@ -114,6 +114,13 @@ a:hover {
   text-decoration: underline;
 }
 
+a.visible_link {
+  text-decoration: underline;
+  color: #222222;
+  text-shadow: none;
+}
+
+
 a.white_link {
   text-decoration: none;
   color: #f2f2f2;
