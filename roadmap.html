@@ -64,7 +64,7 @@ test:        files("src/") | javac | junit;
 
 <h3>Parallelizing batches</h3>
 
-<p>Processing set of files independently is a great occassion for parallelizing work. Consider process of converting svg files into png format. All we need is a function that accepts single svg file and returns single png file. Given this we should be able to run conversion of all files in parallel like in script below. Note double pipe characters ('||') before svgToPng call. This tells Smooth that although function svgToPng does not accept set of files but just a single file - each file should be passed to the function in separate call (of course call executions will happen in parallel).</p>
+<p>Processing each file from File* independently is a great occassion for parallelizing work. Consider process of converting svg files into png format. All we need is a function that accepts single svg file and returns single png file. Given this we should be able to run conversion of all files in parallel like in script below. Note double pipe characters ('||') before svgToPng call. This tells Smooth that although function svgToPng does not accept File* but just a single File - each file should be passed to the function in separate call (of course call executions will happen in parallel).</p>
 
 <pre><code>convert: files("svg-files/") || svgToPng | save("release/");
 </code></pre>
@@ -118,16 +118,16 @@ release-app2-jar: release-function("app2/src/", "release-app-2/");
 
 <ul>
 <li>File - single file</li>
-<li>File* - set of files</li>
+<li>File* - collection of files</li>
 <li>String - string value</li>
-<li>String* set of Strings</li>
+<li>String* collection of Strings</li>
 </ul><p>Smooth should support at least:</p>
 
 <ul>
 <li>Bool - boolean value</li>
-<li>Bool* - set of Bools</li>
+<li>Bool* - collection of Bools</li>
 <li>Int - single integer</li>
-<li>Int* - set of integers</li>
+<li>Int* - collection of integers</li>
 </ul>
 <br>
 
