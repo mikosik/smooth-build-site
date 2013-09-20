@@ -138,7 +138,7 @@ releaseJar: <a href="api/smooth/file/save.html">save</a>("release/", <a href="ap
 
         <h4>Named parameters</h4>
         <p>
-          If you take a look at our last example and check documentation for <a href="api/smooth/file/save.html">save</a> function you notice that we passed only two arguments to it while documentation for that function specifies three. Smooth does not require you to specify values for all parameters nor it requires to pass them in any order. Smooth intelligently deduces which parameter should be assigned from which argument based on their types. If there is ambiguity (for example two parameters have the same type as passed argument) matching will fail unless we explicitly assign ambiguous arguments to parameters.
+          If you take a look at our last example and check documentation for <a href="api/smooth/file/save.html">save</a> function you notice that we passed only two arguments to it while documentation for that function specifies three. Smooth does not require you to specify values for all parameters nor it requires to pass them in any order. Smooth intelligently deduces which parameter should be assigned from which argument based on their types. If there is ambiguity (for example two parameters have the same type as passed argument) matching will fail unless we explicitly assign ambiguous arguments to parameters or one of parameters is required in which case it will be assigned as it is the only option to make whole function call correct.
         </p>
         <p>
         Let's look at <a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example03">example03</a>. It explicitly assigns arguments to parameters (although it is not necessary in that case as automatic assignment would work fine).
@@ -152,6 +152,9 @@ releaseJar: <a href="api/smooth/file/save.html">save</a>(dir="release/", file=<a
         <p>
           Note that explicitly assigning argument to parameter cannot be done for value that is passed through a pipe. This may be a nuisanance as you have to use nested function calls in such cases.
         </p>
+        <p>
+          In most cases you probably use named arguments even though they are not required just to increase readability of your code. Skipping naming makes sense in common functions like <a class="visible_link" href="api/smooth/file/save.html">save</a> or <a class="visible_link" href="api/smooth/file/file.html">file</a> when assignment that will be chosen automatically is obvious to the human reader.
+        </p>
 	<h4>Literals</h4>
         As you noticed Smooth contains String literals as any other language. Another literal that you find useful is a collection literal that lets you create File* and String* collections. Collection literal is comma separated list of expressions enclosed inside brackets []. <a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example04">Example04</a> below shows collection literal in action. Note that this time our (user defined) function "zipped" calls other function defined by us "books".
         <p>
@@ -161,6 +164,24 @@ zipped: books | <a href="api/smooth/compress/zip.html">zip</a> | <a href="api/sm
 
 </code></pre>
         </p>
+
+        <h4>Advanced example</h4>
+        Let's do something more complicated. Take a look at <a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example05">Example05</a>.
+<p>
+<pre><code>
+library : <a href="api/smooth/file/files.html">files</a>("src/lib/") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a>;
+releaseJar: <a href="api/smooth/file/files.html">files</a>("src/main") | <a href="api/smooth/java/javac.html">javac</a>(libs=[library]) | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release/");
+
+</code></pre>
+        </p>
+        <p>
+        First line defines library - it takes java files from "src/lib/" dir, compiles them and packs as jar file.
+        Second line does similar thing to java files from "src/main" dir but it uses jar produces by the first line.
+        </p>
+        <p>
+        Once again, notice that we didn't have to specify (nor create) any directory for temporary files. Only location of java source files and output directory had to be provided.
+        </p>
+
         <h4>More to come</h4>
         <p>
         This is only beginning of Smooth-build development so there's a lot of features that can be done to revolutionize the world of application building. Take a look at <a class="visible_link" href="roadmap.html">Feature roadmap</a> to see what is coming.
