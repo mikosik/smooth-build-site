@@ -47,8 +47,8 @@
 
 <p>In the following Smooth script:</p>
 
-<pre><code>classes:     files("src/") | javac;
-release-jar: classes | jar | save("release/");
+<pre><code>classes:     files("src") | javac;
+release-jar: classes | jar | save("release");
 test:        classes | junit;
 </code></pre>
 
@@ -64,8 +64,8 @@ test:        classes | junit;
 
 <p>Consider following Smooth script:</p>
 
-<pre><code>release-jar: files("src/") | javac | jar | save("release/");
-test:        files("src/") | javac | junit;
+<pre><code>release-jar: files("src") | javac | jar | save("release");
+test:        files("src") | javac | junit;
 </code></pre>
 
 <p>Both <code>release-jar</code> and <code>test</code> functions compile sources from 'src' dir. Smooth build will detect that and perform only one compilation, feeding result to both functions. Obviously in most cases you would extract common code into separate function anyway (to increase readability and ease maintenance).</p>
@@ -75,7 +75,7 @@ test:        files("src/") | javac | junit;
 
 <p>Processing each file from File* independently is a great occassion for parallelizing work. Consider process of converting svg files into png format. All we need is a function that accepts single svg file and returns single png file. Given this we should be able to run conversion of all files in parallel like in script below. Note double pipe characters ('||') before svgToPng call. This tells Smooth that although function svgToPng does not accept File* but just a single File - each file should be passed to the function in separate call (of course call executions will happen in parallel).</p>
 
-<pre><code>convert: files("svg-files/") || svgToPng | save("release/");
+<pre><code>convert: files("svg-files") || svgToPng | save("release");
 </code></pre>
 <br><br>
 
@@ -86,7 +86,7 @@ test:        files("src/") | javac | junit;
 <pre><code>import smooth.file.*;
 import smooth.java.javac;
 
-release-jar: files("src/") | javac | smooth.compress.jar | save ("release/");
+release-jar: files("src") | javac | smooth.compress.jar | save ("release");
 </code></pre>
 <br><br>
 
@@ -94,25 +94,25 @@ release-jar: files("src/") | javac | smooth.compress.jar | save ("release/");
 
 <p>So far only builtin function could accept parameters. User defined functions were always paremeterless. Introduction of user defined parameterized functions will allow more advanced code reused. Consider following script:</p>
 
-<pre><code>release-app1-jar: files("app1/src/") | javac | jar | save ("release-app-1/");
-release-app2-jar: files("app2/src/") | javac | jar | save ("release-app-2/");
+<pre><code>release-app1-jar: files("app1/src") | javac | jar | save ("release-app-1");
+release-app2-jar: files("app2/src") | javac | jar | save ("release-app-2");
 </code></pre>
 
 <p>The only difference between functions is a list of input files and output file. We could do better:</p>
 
 <pre><code>release-function(File* sources): sources | javac | jar;
-release-app1-jar: files("app1/src/") | release-function
-                | save ("release-app-1/");
-release-app2-jar: files("app2/src/") | release-function
-                | save ("release-app-2/");
+release-app1-jar: files("app1/src") | release-function
+                | save ("release-app-1");
+release-app2-jar: files("app2/src") | release-function
+                | save ("release-app-2");
 </code></pre>
 
 <p>This is not the shortest version posssible as I wanted to show how user defined function could be easily used inside pipes (taking output of one function, processing it, and passing to the next function in the pipe). We can ofcourse simplify it even more:</p>
 
 <pre><code>release-function(String sourceDir, String outputDir):
            files(sourceDir) | javac | jar | save(outputDir);
-release-app1-jar: release-function("app1/src/", "release-app-1/");
-release-app2-jar: release-function("app2/src/", "release-app-2/");
+release-app1-jar: release-function("app1/src", "release-app-1");
+release-app2-jar: release-function("app2/src", "release-app-2");
 </code></pre>
 <br><br>
 

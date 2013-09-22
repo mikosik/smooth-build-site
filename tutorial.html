@@ -47,7 +47,7 @@
         </p>
         <p>
 <pre><code>
-releaseJar: <a href="api/smooth/file/files.html">files</a>("src/") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release/");
+releaseJar: <a href="api/smooth/file/files.html">files</a>("src") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release");
 
 </code></pre>
         </p>
@@ -89,7 +89,7 @@ Now let's take a look at build file we've just run from our first example (<a cl
         </p>
         <p>
 <pre><code>
-releaseJar: <a href="api/smooth/file/files.html">files</a>("src/") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release/");
+releaseJar: <a href="api/smooth/file/files.html">files</a>("src") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release");
 
 </code></pre>
         </p>
@@ -99,7 +99,7 @@ releaseJar: <a href="api/smooth/file/files.html">files</a>("src/") | <a href="ap
           <li>takes all files (recursively) from "src" directory</li>
           <li>passes them to <a href="api/smooth/java/javac.html">javac</a> function (Java compiler) that compiles them</li>
           <li>passes result of <a href="api/smooth/java/javac.html">javac</a> call (*.class files) to <a href="api/smooth/java/jar.html">jar</a> function that packs them into single jar file</li>
-          <li>stores resulting jar file inside "release/" directory</li>
+          <li>stores resulting jar file inside "release" directory</li>
         </ul>
         </p>
         <p>Note that you don't need to explicitly create directory for *.class files nor even mention it in build file. Smooth handles that automatically.</p>
@@ -127,7 +127,7 @@ releaseJar: <a href="api/smooth/file/files.html">files</a>("src/") | <a href="ap
         <p>Let's dig a little bit deeper into functions chaining. Chaining function calls via pipes that we've seen in the very first example is just a syntactic sugar over more traditional function calls. Let's take a look at <a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example02">example02</a> that declares the same process but without using pipes.
         <p>
 <pre><code>
-releaseJar: <a href="api/smooth/file/save.html">save</a>("release/", <a href="api/smooth/java/jar.html">jar</a>(<a href="api/smooth/java/javac.html">javac</a>(<a href="api/smooth/file/files.html">files</a>("src/"))));
+releaseJar: <a href="api/smooth/file/save.html">save</a>("release", <a href="api/smooth/java/jar.html">jar</a>(<a href="api/smooth/java/javac.html">javac</a>(<a href="api/smooth/file/files.html">files</a>("src"))));
 
 </code></pre>
         </p>
@@ -145,7 +145,7 @@ releaseJar: <a href="api/smooth/file/save.html">save</a>("release/", <a href="ap
         </p>
         <p>
 <pre><code>
-releaseJar: <a href="api/smooth/file/save.html">save</a>(dir="release/", file=<a href="api/smooth/java/jar.html">jar</a>(<a href="api/smooth/java/javac.html">javac</a>(<a href="api/smooth/file/files.html">files</a>("src/"))));
+releaseJar: <a href="api/smooth/file/save.html">save</a>(dir="release", file=<a href="api/smooth/java/jar.html">jar</a>(<a href="api/smooth/java/javac.html">javac</a>(<a href="api/smooth/file/files.html">files</a>("src"))));
 
 </code></pre>
         </p>
@@ -160,7 +160,7 @@ releaseJar: <a href="api/smooth/file/save.html">save</a>(dir="release/", file=<a
         <p>
 <pre><code>
 books: [ <a href="api/smooth/file/file.html">file</a>("books/LifeOfBrian.txt"), <a href="api/smooth/file/file.html">file</a>("books/TheMeaningOfLife.txt") ];
-zipped: books | <a href="api/smooth/compress/zip.html">zip</a> | <a href="api/smooth/file.save.html">save("output/")</a>;
+zipped: books | <a href="api/smooth/compress/zip.html">zip</a> | <a href="api/smooth/file.save.html">save("output")</a>;
 
 </code></pre>
         </p>
@@ -169,13 +169,13 @@ zipped: books | <a href="api/smooth/compress/zip.html">zip</a> | <a href="api/sm
         Let's do something more complicated. Take a look at <a class="visible_link" href="https://github.com/mikosik/smooth-build-examples/tree/master/example05">Example05</a>.
 <p>
 <pre><code>
-library : <a href="api/smooth/file/files.html">files</a>("src/lib/") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a>;
-releaseJar: <a href="api/smooth/file/files.html">files</a>("src/main") | <a href="api/smooth/java/javac.html">javac</a>(libs=[library]) | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release/");
+library : <a href="api/smooth/file/files.html">files</a>("src/lib") | <a href="api/smooth/java/javac.html">javac</a> | <a href="api/smooth/java/jar.html">jar</a>;
+releaseJar: <a href="api/smooth/file/files.html">files</a>("src/main") | <a href="api/smooth/java/javac.html">javac</a>(libs=[library]) | <a href="api/smooth/java/jar.html">jar</a> | <a href="api/smooth/file/save.html">save</a>("release");
 
 </code></pre>
         </p>
         <p>
-        First line defines library - it takes java files from "src/lib/" dir, compiles them and packs as jar file.
+        First line defines library - it takes java files from "src/lib" dir, compiles them and packs as jar file.
         Second line does similar thing to java files from "src/main" dir but it uses jar produces by the first line.
         </p>
         <p>
