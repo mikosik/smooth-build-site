@@ -30,16 +30,18 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h4>Description:</h4>
-        Jars a set of files into "output.jar" file.
+        Jars a set of files. 
 
         <h4>Result:</h4>
-        File named "output.jar".
+        Jar file containing packed files.
 
         <h4>Parameters:</h4>
         <p>
           <dl>
             <dt>File* files</dt>
             <dd>set of files to be compressed (jared)</dd>
+            <dt>String output</dt>
+            <dd>Path of output file. Defaults to "output.jar".</dd>
             <dt>File manifest</dt>
             <dd>file to be used as manifest</dd>
           </dl>
