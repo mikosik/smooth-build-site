@@ -44,7 +44,7 @@
         </p>
 
         <h4>Examples:</h4>
-        <p>Takes all files from "src" directory, compiles them and executes all tests among them.</p>
+        <p>Takes all files from "src" directory, compiles them and executes all tests among them. Note that in current releases there's no need to pass jar with junit classes. Junit binaries are embedded inside smooth-all.jar. This will probably change in future so it would be easy to update junit library without updating smooth version.</p>
         <p>
 <pre><code>testJar: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("src")</a> | <a href="http://www.smooth-build.org/api/smooth/java/javac.html">javac</a> | <a href="http://www.smooth-build.org/api/smooth/java/jar.html">jar</a>;
 test: [ testJar ]  | <a href="http://www.smooth-build.org/api/smooth/java/junit.html">junit</a>;
