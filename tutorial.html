@@ -74,14 +74,61 @@ git clone https://github.com/mikosik/smooth-build-examples.git
         </p>
         <p>
 <pre><code>$smooth releaseJar
-INFO: [files]    DONE
-INFO: [javac]    DONE
-INFO: [jar]      DONE
-INFO: [save]     DONE
-INFO: SUCCESS
+ + files                                           [ line 2 ]
+ + javac                                           [ line 2 ]
+ + jar                                             [ line 2 ]
+ + save                                            [ line 2 ]
+ + SUCCESS :)
 $
 </code></pre>
         </p>
+
+        <p>
+        More interesting things will happen when you run build for the second time.
+        Smooth will reuse result of previous build that it has stored in cache.
+        </p>
+
+        <p>
+<pre><code>$smooth releaseJar
+ + files                                           [ line 2 ]
+ + javac                                           [ line 2 ] CACHE
+ + jar                                             [ line 2 ] CACHE
+ + save                                            [ line 2 ]
+ + SUCCESS :)
+$
+</code></pre>
+        </p>
+
+        <p>
+        So far it is nothing extraordinary. Most build system reuses results from previous builds - such process is called incremental building.
+        Smooth is much smarter. For each task it has ever executed, it stores result and content digest of task's arguments (sha1 is used for that).
+        If it ever has to execute given task with the same arguments it just takes result from cache.
+        </p>
+        <p>
+        Let's understand what it gives us.
+        Change one of java files in example01 project (for example src/KnightsWhoSayNi.java) by just adding a few empty spaces at the end of one line.
+        When you run build again you notice that javac task has to be executed once again (as content of *.java files has changed) but because
+        you changed only formatting of the file it will produce exactly the same *.class file as before. This means that smooth have already
+        executed jar task for such *.class files before and it will take result from the cache. See output below
+        </p>
+
+        <p>
+<pre><code>$smooth releaseJar
+ + files                                           [ line 2 ]
+ + javac                                           [ line 2 ]
+ + jar                                             [ line 2 ] CACHE
+ + save                                            [ line 2 ]
+ + SUCCESS :)
+$
+</code></pre>
+        </p>
+        <p>
+        If you now revert changes you introduced to mentioned java file and run build once more then all task's result will be taken from 
+        cache.
+        </p>
+
+
+
 
         <h4>Function calls</h4>
         </p>
