@@ -127,7 +127,8 @@ $
 
         <p>
         It may seem obvious so far. Most build system reuses results from previous builds - such process is called incremental building.
-        Smooth is much smarter. For each task it has ever executed, it stores result and content digest of task's arguments (sha1 is used for that).
+        Smooth is much smarter. For each task it has ever executed, it stores result and content digest of task's arguments
+        (<a class="visible_link" href="http://en.wikipedia.org/wiki/SHA-1">sha1</a> is used for that).
         If it ever has to execute given task with the same arguments it just takes result from cache. So it doesn't just store result of last build.
         It has cache of all results you have ever calculated on your machine.
         </p>
