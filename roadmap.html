@@ -55,22 +55,6 @@ test:        classes | junit;
 <p>functions <code>release-jar</code> and <code>test</code> both depend on <code>classes</code> function (which will be executed first) but do not depend on each others so they will be executed in parallel.</p>
 <br>
 
-<h3>Incremental builds</h3>
-
-<p>Yikes! It is not supported yet but it is at the top of my to-do list. For now, each build starts from scratch.</p>
-<br>
-
-<h3>Copy-paste detection</h3>
-
-<p>Consider following Smooth script:</p>
-
-<pre><code>release-jar: files("src") | javac | jar | save("release");
-test:        files("src") | javac | junit;
-</code></pre>
-
-<p>Both <code>release-jar</code> and <code>test</code> functions compile sources from 'src' dir. Smooth build will detect that and perform only one compilation, feeding result to both functions. Obviously in most cases you would extract common code into separate function anyway (to increase readability and ease maintenance).</p>
-<br>
-
 <h3>Parallelizing batches</h3>
 
 <p>Processing each file from File* independently is a great occassion for parallelizing work. Consider process of converting svg files into png format. All we need is a function that accepts single svg file and returns single png file. Given this we should be able to run conversion of all files in parallel like in script below. Note double pipe characters ('||') before svgToPng call. This tells Smooth that although function svgToPng does not accept File* but just a single File - each file should be passed to the function in separate call (of course call executions will happen in parallel).</p>
@@ -79,7 +63,7 @@ test:        files("src") | javac | junit;
 </code></pre>
 <br><br>
 
-<h3>Packages/Imports</h3>
+<h3>Imports / fully qualified function names</h3>
 
 <p>Imports will be introduced to avoid name clashes when number of builtin functions grows. To use (reference) a function you would have to import it at the beginning of Smooth script file. You could also use fully qualified name in a function call.</p>
 
