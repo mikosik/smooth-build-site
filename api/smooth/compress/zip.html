@@ -33,22 +33,18 @@
         Zips a set of files.
 
         <h4>Result:</h4>
-        File named "output.zip".
+        Blob containing zipped files.
 
         <h4>Parameters:</h4>
         <p>
           <dl>
-            <dt>File* files</dt>
+            <dt>File[] files</dt>
             <dd>set of files to be compressed (ziped)</dd>
-            <dt>String output</dt>
-            <dd>Path of output file. Defaults to "output.zip".</dd>
-            <dt>File manifest</dt>
-            <dd>file to be used as manifest</dd>
           </dl>
         </p>
 
         <h4>Examples:</h4>
-        <p>Takes all files from "src" directory, zips them into "output.zip" and stores in "output_dir" directory.</p>
+        <p>Zips all files from "src" directory.</p>
         <p>
 <pre><code>
 files.zip: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("src")</a> | <a href="http://www.smooth-build.org/api/smooth/compress/zip.html">zip</a> ;

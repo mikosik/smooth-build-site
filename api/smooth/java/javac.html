@@ -33,14 +33,14 @@
         Compiles set of java files.
 
         <h4>Result:</h4>
-        File* - set of *.class files.
+        File[] - set of *.class files.
 
         <h4>Parameters:</h4>
         <p>
           <dl>
-            <dt>File* sources</dt>
+            <dt>File[] sources</dt>
             <dd>Set of *.java files to be compiled</dd>
-            <dt>File* libs</dt>
+            <dt>Blob[] libs</dt>
             <dd>Set of *.jar files containing libraries (*.class files) needed for compilation of source files passed via sources parameter</dd>
             <dt>String source</dt>
             <dd>Provide source compatibility with specified release</dd>
@@ -50,7 +50,7 @@
         </p>
 
         <h4>Examples:</h4>
-        <p>Takes all files from "src" directory, compiles them and stores results in "output" directory.</p>
+        <p>Takes all files from "src" directory and compiles them.</p>
         <p>
 <pre><code>
 classFiles: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("src")</a> | <a href="http://www.smooth-build.org/api/smooth/java/javac.html">javac</a> ;

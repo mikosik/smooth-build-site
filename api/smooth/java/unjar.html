@@ -33,18 +33,18 @@
         Unjars files from given jar file.
 
         <h4>Result:</h4>
-        File* - set of files from given jar file.
+        Blob[] - array of files from given jar file.
 
         <h4>Parameters:</h4>
         <p>
           <dl>
-            <dt>File file</dt>
-            <dd>jar file to be uncompressed</dd>
+            <dt>Blob blob</dt>
+            <dd>content of jar to be uncompressed</dd>
           </dl>
         </p>
 
         <h4>Examples:</h4>
-        <p>Takes "jars/myJar.jar" file and uncompresses all files from it to "output" directory.</p>
+        <p>Uncompresses all files from "jars/myJar.jar" file.</p>
         <p>
 <pre><code>
 files: <a href="http://www.smooth-build.org/api/smooth/file/file.html">file("jars/myJar.jar")</a> | <a href="http://www.smooth-build.org/api/smooth/java/unjar.html">unjar</a> ;
