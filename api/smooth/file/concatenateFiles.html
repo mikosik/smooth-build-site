@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
     <meta name="description" content="Smooth-build : powerful build tool with simple language" />
     <link rel="stylesheet" type="text/css" media="screen" href="../../../stylesheets/api.css">
-    <title>Smooth-build API: smooth.file.merge</title>
+    <title>Smooth-build API: smooth.file.concatenateFiles</title>
 
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -22,7 +22,7 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
         <header class="inner">
-          <div style="color: #f2f2f2;">merge</div>
+          <div style="color: #f2f2f2;">concatenateFiles</div>
         </header>
     </div>
 
@@ -30,8 +30,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h4>Description:</h4>
-        Merges two File[].<br>
-        Fails if both File[] contain file with the same path.
+        Concatenates two File[].<br>
 
         <h4>Result:</h4>
         File[]
@@ -40,20 +39,20 @@
         <p>
           <dl>
             <dt>File[] files</dt>
-            <dd>Collection of files to be merged with collection passed via "with" parameter</dd>
+            <dd>Array of files to be concatenated with array passed via "with" parameter</dd>
           </dl>
           <dl>
             <dt>File[] with</dt>
-            <dd>Collection of files to be merged with collection passed via "files" parameter</dd>
+            <dd>Array of files to be concatenated with array passed via "files" parameter</dd>
           </dl>
         </p>
 
         <h4>Examples:</h4>
-        <p>Takes all files (recursively) from "movies/Monty-Python/" directory merges them with files taken from "movies/John-Cleese" directory and copies all of them to "output" directory.</p>
+        <p>Takes all files (recursively) from "movies/Monty-Python/" directory and concatenates them with files taken from "movies/John-Cleese" directory.</p>
         <p>
 <pre><code>moviesA: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("movies/Monty-Python/")</a>;
 moviesB: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("movies/John-Cleese/")</a>;
-allMovies: <a href="http://www.smooth-build.org/api/smooth/file/merge.html"></a>merge(a=moviesA, b=moviesB)</a>;
+allMovies: <a href="http://www.smooth-build.org/api/smooth/file/concatenateFiles.html"></a>concatenateFiles(a=moviesA, b=moviesB)</a>;
 </code></pre>
         </p>
       </section>
