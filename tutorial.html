@@ -77,7 +77,6 @@ git clone https://github.com/mikosik/smooth-build-examples.git
  + files                                           [ line 2 ]
  + javac                                           [ line 2 ]
  + jar                                             [ line 2 ]
- + save                                            [ line 2 ]
  + SUCCESS :)
 $
 </code></pre>
@@ -118,7 +117,6 @@ release.jar: <a href="api/smooth/file/files.html">files</a>("src") | <a href="ap
  + files                                           [ line 2 ]
  + javac                                           [ line 2 ] CACHE
  + jar                                             [ line 2 ] CACHE
- + save                                            [ line 2 ]
  + SUCCESS :)
 $
 </code></pre>
@@ -153,7 +151,6 @@ $
  + files                                           [ line 2 ]
  + javac                                           [ line 2 ]
  + jar                                             [ line 2 ] CACHE
- + save                                            [ line 2 ]
  + SUCCESS :)
 $
 </code></pre>
@@ -175,13 +172,13 @@ $
           <dt>File</dt>
           <dd>Single file read from file system. Each File has a content (Blob) and path associated with it (String).</dd>
           <dt>String[]</dt>
-          <dd>array of Strings</dd>
+          <dd>Array of Strings</dd>
           <dt>Blob[]</dt>
-          <dd>array of Blobs</dd>
+          <dd>Array of Blobs</dd>
           <dt>File[]</dt>
           <dd>Array of Files</dd>
         </dl>
-        There are obviously some important types (like boolean) missing. Remember this is very early version of Smooth-build tool.
+        There are obviously some important types (like Boolean) missing. Remember this is very early version of Smooth-build tool.
         </p>
         <p>
         Smooth is statically typed. Each function declares its parameters and their types. Build process will fail early if argument passed to a function call won't match required types.
@@ -224,7 +221,7 @@ release.jar: <a href="api/smooth/java/jar.html">jar</a>(files=<a href="api/smoot
         <p>
 <pre><code>
 books: [ <a href="api/smooth/file/file.html">file</a>("books/LifeOfBrian.txt"), <a href="api/smooth/file/file.html">file</a>("books/TheMeaningOfLife.txt") ];
-zipped: books | <a href="api/smooth/compress/zip.html">zip</a> | <a href="api/smooth/file.save.html">save("output")</a>;
+zipped: books | <a href="api/smooth/compress/zip.html">zip</a> ;
 
 </code></pre>
         </p>
