@@ -40,6 +40,8 @@
           <dl>
             <dt>Blob[] libs</dt>
             <dd>Array of jar files containing test classes and all library classes needed for test to run. All classes which names end with Test will be run. Future version of smooth will provide fine-grained way to filter out tests to be run. </dd>
+            <dt>String include</dt>
+            <dd>Pattern matching java class files from which tests should be run. Works the same way as 'include' param in <a class="visible_link" href="http://www.smooth-build.org/api/smooth/file/filter.html">filter</a> function.</dd>
           </dl>
         </p>
 
@@ -48,6 +50,13 @@
         <p>
 <pre><code>testJar: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("src")</a> | <a href="http://www.smooth-build.org/api/smooth/java/javac.html">javac</a> | <a href="http://www.smooth-build.org/api/smooth/java/jar.html">jar</a>;
 test: [ testJar ]  | <a href="http://www.smooth-build.org/api/smooth/java/junit.html">junit</a>;
+</code></pre>
+        </p>
+
+        <p>Takes all files from "src" directory, compiles them and executes ony tests from classes which names end with 'Test'.</p>
+        <p>
+<pre><code>testJar: <a href="http://www.smooth-build.org/api/smooth/file/files.html">files("src")</a> | <a href="http://www.smooth-build.org/api/smooth/java/javac.html">javac</a> | <a href="http://www.smooth-build.org/api/smooth/java/jar.html">jar</a>;
+test: [ testJar ]  | <a href="http://www.smooth-build.org/api/smooth/java/junit.html">junit(include="**/*Test.class")</a>;
 </code></pre>
         </p>
       </section>
